@@ -2,17 +2,22 @@ import java.util.Arrays;
 
 class Solution {
     public int solution(int[] citations) {
-        Arrays.sort(citations);
         int n = citations.length;
-        int left = 0, right = n - 1;
-        while (left <= right) {
-            int mid = (left + right) / 2;
-            if (citations[mid] >= n - mid) {
-                right = mid - 1;
+        int[] bucket = new int[n + 1];
+        for (int c : citations) {
+            if (c >= n) {
+                bucket[n]++;
             } else {
-                left = mid + 1;
+                bucket[c]++;
             }
         }
-        return n - left;
+        int count = 0;
+        for (int i = n; i >= 0; i--) {
+            count += bucket[i];
+            if (count >= i) {
+                return i;
+            }
+        }
+        return 0;
     }
 }
